@@ -87,12 +87,11 @@ void patternWave() {
 void patternRadialLines() {
  
 
-    // long and thin, starts anywhere and ends at radius
-    radialLines(int(random(20,radius)), radius, 12, int(random(5,10))); 
+    radialLines(int(random(0,radius)), radius, 6, int(random(20,40))); 
 
-    // long and thin, starts at zero and ends anywhere
-    radialLines(0, int(random(20,radius)), 12, int(random(5,10)));    
+    radialLines(0, int(random(0,radius)), 12, int(random(5,20)));    
 
+    radialLines(0, int(random(0,radius)), 24, int(random(1,5))); 
 
 }
 
