@@ -19,6 +19,7 @@ void setup() {
     //noLoop();
     frameRate(1);
     pattern = 2;
+    smooth();
 
 }
 
@@ -36,7 +37,9 @@ void draw() {
     case 2:
       patternRadialLines();
       break;
-  
+    case 3:
+      patternRadialSweep();
+      break;  
   }
 
   savePattern();
@@ -118,6 +121,64 @@ void radialLines(int _beginLine, int _endLine, int _numberOfLines, int _lineThic
     popMatrix();
 
 }
+
+
+
+/////// PATTERN 3 - LINES FROM CENTER - SWEEP ///////
+void patternRadialSweep() {
+ 
+    int[] angleRatios = {1,2,3,4};
+
+    // stubby patches, starts and ends in the middle, few of them
+    radialSweep(int(random(50,100)), int(random(150,200)), 450, 900); 
+
+    // long, thin patches, few of them
+    //radialSweep(int(random(10,50)), radius, 360/angleRatios[int(random(0,angleRatios.length))]); 
+    radialSweep(int(random(10,50)), radius, 225, 450); 
+
+}
+
+void radialSweep(int _beginLine, int _endLine, int _gapCounterLimit, int _gapCounterSpace) {
+
+
+    int beginLine = _beginLine;
+    int endLine = _endLine;  
+    int gapCounterLimit = _gapCounterLimit;   
+    int gapCounterSpace = _gapCounterSpace;
+    int gapCounter = 0;
+    //float shiftAngle = _shiftAngle;
+    stroke(0);
+    strokeWeight(2);
+    strokeCap(SQUARE);
+    strokeJoin(ROUND);
+
+    pushMatrix();
+    translate(centerX,centerY);
+    //rotate(radians(1); // shift rotation    
+
+    float sweepAngle = 0.1;
+    for(int i=0; i < 3600; i++) {
+
+      rotate(radians(sweepAngle));
+
+      if (gapCounter < gapCounterLimit) {
+        line(0,-beginLine,0,-endLine); 
+
+      } else if (gapCounter > gapCounterSpace) {
+        gapCounter = 0;
+      }
+      gapCounter++;
+     }
+
+
+    popMatrix();
+
+}
+
+
+
+
+
 
 ////////////     SAVE ROUTINE      ////////////
 void savePattern() {
