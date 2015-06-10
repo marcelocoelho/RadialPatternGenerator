@@ -91,7 +91,7 @@ void patternRadialLines() {
 
     radialLines(0, int(random(0,radius)), 12, int(random(5,20)));    
 
-    radialLines(0, int(random(0,radius)), 24, int(random(1,5))); 
+    radialLines(0, int(random(0,radius)), 24, int(random(1,5))); //line thickness should not be smaller than 6
 
 }
 
@@ -184,7 +184,7 @@ void savePattern() {
   
   if (saveMode==true) {
     saveCounter++;
-    save("images/radial-"+pattern+"-"+saveCounter+".png");
+    save("images"+pattern+"/"+saveCounter+".png");
   }
 }
 
@@ -195,7 +195,7 @@ void savePattern() {
 void keyPressed() {
   if (key == 'S' || key == 's') { 
     saveCounter++;
-    save("images/radial-"+pattern+"-"+saveCounter+".png");
+    save("images"+pattern+"/"+saveCounter+".png");
   }
 
   if (key == 'D' || key == 'd') { 
