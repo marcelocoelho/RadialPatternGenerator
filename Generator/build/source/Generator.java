@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class Generator extends PApplet {
+
 
 
 int canvasSize = 500;
@@ -13,7 +29,7 @@ int saveCounter = 0;
 boolean saveMode = false;
 
 
-void setup() {
+public void setup() {
     size(canvasSize,canvasSize);
     //noLoop();
     frameRate(1);
@@ -21,7 +37,7 @@ void setup() {
     smooth();
 }
 
-void draw() {
+public void draw() {
 
   background(255);
 
@@ -45,7 +61,7 @@ void draw() {
 
 
 /////// PATTERN 1 - CONCENTRIC WAVES ///////
-void patternWave() {
+public void patternWave() {
 
     noStroke();
     ellipseMode(RADIUS);
@@ -55,16 +71,16 @@ void patternWave() {
     
     //int amplitude = 30;
     //coloe c = color(abs(py-i)*255/amplitude);
-    float inc = TWO_PI/180.0;
-    float a = 0.0;
-    color c;
+    float inc = TWO_PI/180.0f;
+    float a = 0.0f;
+    int c;
     
-    float frequency = random(10.0, 100.0);
+    float frequency = random(10.0f, 100.0f);
     
     // scan through circle outside-in
     for (int r = radius; r > 0; --r) {
       
-      frequency = frequency / 1.007;
+      frequency = frequency / 1.007f;
       inc = TWO_PI/frequency;
       c = color((sin(a)*125)+125);
       println((sin(a)*125)+125);
@@ -80,15 +96,15 @@ void patternWave() {
 
 
 /////// PATTERN 2 - LINES FROM CENTER ///////
-void patternRadialLines() {
+public void patternRadialLines() {
     pushMatrix();
-    radialLines(int(random(0,radius)), radius, 6, int(random(8,12))); 
+    radialLines(PApplet.parseInt(random(0,radius)), radius, 6, PApplet.parseInt(random(8,12))); 
     popMatrix();
     pushMatrix();
-    radialLines(0, int(random(0,radius)), 12, int(random(12,16)));    
+    radialLines(0, PApplet.parseInt(random(0,radius)), 12, PApplet.parseInt(random(12,16)));    
     popMatrix();
     pushMatrix();
-    radialLines(int(random(radius/2,radius)), int(random(0,radius)), 24, int(random(6,12))); //line thickness should not be smaller than 6
+    radialLines(PApplet.parseInt(random(radius/2,radius)), PApplet.parseInt(random(0,radius)), 24, PApplet.parseInt(random(6,12))); //line thickness should not be smaller than 6
     popMatrix();
     filter(BLUR, 2);
 
@@ -108,7 +124,7 @@ void patternRadialLines() {
 }
 
 
-void radialLines(int _beginLine, int _endLine, int _numberOfLines, int _lineThickness) {
+public void radialLines(int _beginLine, int _endLine, int _numberOfLines, int _lineThickness) {
 
     int beginLine = _beginLine;
     int numberOfLines = _numberOfLines;
@@ -135,21 +151,21 @@ void radialLines(int _beginLine, int _endLine, int _numberOfLines, int _lineThic
 
 
 /////// PATTERN 3 - LINES FROM CENTER - SWEEP ///////
-void patternRadialSweep() {
+public void patternRadialSweep() {
  
     int[] angleRatios = {1,2,3,4};
 
     // stubby patches, starts and ends in the middle, few of them
-    radialSweep(int(random(50,100)), int(random(100,150)), 450, 900); 
+    radialSweep(PApplet.parseInt(random(50,100)), PApplet.parseInt(random(100,150)), 450, 900); 
 
     // long, thin patches, few of them
     //radialSweep(int(random(10,50)), radius, 360/angleRatios[int(random(0,angleRatios.length))]); 
-    radialSweep(int(random(10,150)), radius, 225, 450); 
+    radialSweep(PApplet.parseInt(random(10,150)), radius, 225, 450); 
     filter(BLUR, 2);
 
 }
 
-void radialSweep(int _beginLine, int _endLine, int _gapCounterLimit, int _gapCounterSpace) {
+public void radialSweep(int _beginLine, int _endLine, int _gapCounterLimit, int _gapCounterSpace) {
 
 
     int beginLine = _beginLine;
@@ -167,7 +183,7 @@ void radialSweep(int _beginLine, int _endLine, int _gapCounterLimit, int _gapCou
     translate(centerX,centerY);
     //rotate(radians(1); // shift rotation    
 
-    float sweepAngle = 0.1;
+    float sweepAngle = 0.1f;
     for(int i=0; i < 3600; i++) {
 
       rotate(radians(sweepAngle));
@@ -192,7 +208,7 @@ void radialSweep(int _beginLine, int _endLine, int _gapCounterLimit, int _gapCou
 
 
 ////////////     SAVE ROUTINE      ////////////
-void savePattern() {
+public void savePattern() {
   
   if (saveMode==true) {
     saveCounter++;
@@ -204,7 +220,7 @@ void savePattern() {
 
 
 ////////////     CONTROL KEYS      ////////////
-void keyPressed() {
+public void keyPressed() {
   if (key == 'S' || key == 's') { 
     saveCounter++;
     save("images"+pattern+"/"+random(0,1000)+saveCounter+".png");
@@ -236,3 +252,12 @@ void keyPressed() {
 
 
 
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "--full-screen", "--bgcolor=#666666", "--stop-color=#cccccc", "Generator" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}
